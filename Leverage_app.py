@@ -28,7 +28,7 @@ st.write("Another, more classical, way to invest our capital, could be to constr
 
 st.latex(r"w\left[\varphi_{1}\left(1+r_{1}\right)+\varphi_{2}\left(1+r_{2}\right)+(1-\varphi_{1}-\varphi_{2})(1+r_{f})\right]=w\left[1+\varphi_{1}r_{1}+\varphi_{2}r_{2}+\left(1-\varphi_{1}-\varphi_{2}\right)r_{f}\right]")
 
-st.write("where $0\leq \varphi_1,\varphi_2 \leq 1$.")
+st.latex(r"\text{where } 0 \leq \varphi_1,\varphi_2 \leq 1")
 
 st.header("Interactive Analysis")
 st.write("Adjust the parameters using the sliders to explore different scenarios.")
