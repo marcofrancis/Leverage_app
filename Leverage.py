@@ -92,15 +92,29 @@ def plot_restaking_portfolios(mu1=0.05, mu2=0.07, sigma1=0.10, sigma2=0.15, rho=
         label='Restaking with(1 - φ1 - φ2)=0'
     )
     
-    # Plot leveraged portfolios
+    # Plot leveraged portfolios split into two groups
+    leverage_unleveraged_mask = (phi1_grid + phi2_grid < 1)
+    leverage_overleveraged_mask = (phi1_grid + phi2_grid >= 1)
+
+    # Plot overleveraged portfolios (φ1 + φ2 ≥ 1) in red
     scatter2 = ax.scatter(
-        sigma_R_leverage,
-        E_R_leverage,
-        c=phi1_grid + phi2_grid,
+        sigma_R_leverage[leverage_overleveraged_mask],
+        E_R_leverage[leverage_overleveraged_mask],
+        c=phi1_grid[leverage_overleveraged_mask] + phi2_grid[leverage_overleveraged_mask],
         cmap='Reds_r',
         s=10,
         alpha=0.1,
         label='Leveraged'
+    )
+
+    # Plot underleveraged portfolios (φ1 + φ2 < 1) in yellow
+    ax.scatter(
+        sigma_R_leverage[leverage_unleveraged_mask],
+        E_R_leverage[leverage_unleveraged_mask],
+        c='yellow',
+        s=10,
+        alpha=0.1,
+        label='Leveraged (φ1 + φ2 < 1)'
     )
 
     # Add colorbars with alpha=1
@@ -122,7 +136,8 @@ def plot_restaking_portfolios(mu1=0.05, mu2=0.07, sigma1=0.10, sigma2=0.15, rho=
     restaking = mlines.Line2D([], [], color='#6caed6', marker='o', ls='', label='Restaking')
     restaking_with_zero = mlines.Line2D([], [], color='blue', marker='o', ls='', label='Restaking with (1 - φ1 - φ2)=0')
     leveraged = mlines.Line2D([], [], color='#fb6b4b', marker='o', ls='', label='Leveraged')
-    plt.legend(handles=[restaking, restaking_with_zero, leveraged])
+    leveraged_unleveraged = mlines.Line2D([], [], color='yellow', marker='o', ls='', label='Leveraged (φ1 + φ2 < 1)')
+    plt.legend(handles=[restaking, restaking_with_zero, leveraged, leveraged_unleveraged])
 
     # Adjust layout
     plt.tight_layout()
